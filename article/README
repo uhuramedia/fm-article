@@ -1,0 +1,10 @@
+DEPENDENCIES:
+  * fm.portlet
+  * fm.utils
+  * django-ckeditor
+
+Uncomment lines in settings.py and urls.py to activiate the article app.
+
+Copy this app into your page app and customize it or just use it as it is.
+
+Please, add changes do you make on the base app to the boilerplate.

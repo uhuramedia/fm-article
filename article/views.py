@@ -1,52 +1,65 @@
-# Create your views here.
+# -*- coding: utf-8 -*-
+from django.conf import settings
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 
 from models import Article
 
+
 def teaser(request):
-    context = {}
-    context['article'] = Article.objects.order_by('-release_date')[:3]
+    article = Article.objects.order_by('-release_date')[:3]
 
     return render_to_response(
-            'article/teaser.html',
-            context,
-            RequestContext(request))
-
-def archive(request):
-    context = {}
-    article_set = Article.objects.order_by('-release_date')[3:]
-    paginator = Paginator(article_set, 5)
-    page = request.GET.get('page', 1)
-
-    try:
-        context['article'] = paginator.page(page)
-    except PageNotAnInteger:
-        context['article'] = paginator.page(1)
-    except EmptyPage:
-        context['article'] = paginator.page(paginator.num_pages)
-
-    context['range'] = _get_smaller_range(
-        context['article'].number,
-        context['article'].paginator.num_pages,
-        context['article'].paginator.page_range
+        'article/teaser.html',
+        locals(),
+        RequestContext(request)
     )
 
+
+def articles(request):
+    articles = Article.objects.order_by('-release_date')
+
+    if settings.ARTICLE_PAGINATION:
+        paginator = Paginator(articles, 5)
+        p = request.GET.get('page', 1)
+
+        try:
+            article = paginator.page(p)
+        except PageNotAnInteger:
+            article = paginator.page(1)
+        except EmptyPage:
+            article = paginator.page(paginator.num_pages)
+
+        article_range = _get_smaller_range(
+            article.number,
+            article.paginator.num_pages,
+            article.paginator.page_range
+        )
+
+        ARTICLE_PAGINATION = settings.ARTICLE_PAGINATION
+
     return render_to_response(
-            'article/archive.html',
-            context,
-            RequestContext(request))
+        'article/articles.html',
+        locals(),
+        RequestContext(request)
+    )
+
 
 def single(request, slug):
-    context = {}
+    if request.GET.get('type', False) == 'modal':
+        extend = '-inner'
+    else:
+        extend = ''
 
-    context['article'] = Article.objects.get(slug=slug)
+    article = get_object_or_404(Article, slug=slug)
 
     return render_to_response(
-            'article/single.html',
-            context,
-            RequestContext(request))
+        'article/single%s.html' % extend,
+        locals(),
+        RequestContext(request)
+    )
+
 
 def _get_smaller_range(current, max, range):
     prev = None
@@ -55,7 +68,7 @@ def _get_smaller_range(current, max, range):
     if current >= 3:
         prev = current - 3
 
-    if current <= max-3:
+    if current <= max - 3:
         next = current + 2
 
     return range[prev:next]

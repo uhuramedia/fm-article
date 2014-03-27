@@ -1,6 +1,6 @@
-from django.conf.urls.defaults import patterns
+from django.conf.urls import patterns, url
 
-urlpatterns = patterns('article.views.',
-    (r'^archive/$', 'archive'),
-    (r'^(?P<slug>.*)/$', 'single'),
+urlpatterns = patterns('article.views',
+    url(r'^$', 'articles', name='articles'),
+    url(r'^(?P<slug>.*)/$', 'article', name='article'),
 )

@@ -1,0 +1,43 @@
+<div class="article article-single">
+
+    <article class="entry">
+
+        <h2>{{ article.title }}</h2>
+
+        <p class="date">
+            {{ article.release_date|date:"d. F, Y" }}
+        </p><!-- /.date -->
+
+        <div class="body">
+
+            {% if article.image %}
+            <p class="image">
+                <img src="{{ article.image.url }}" alt="" />
+            </p><!-- /.image -->
+            {% endif %}
+
+            <div class="teaser">
+                {{ article.teaser|safe }}
+            </div><!-- /.teaser -->
+
+            <div class="text">
+                {{ article.text|safe }}
+            </div><!-- /.text -->
+
+        </div><!-- /.body -->
+
+        {% if article.pdf %}
+        <p class="download">
+            <a href="/media/articlepdf/{{ article.pdf }}" download>DOWNLOAD  <img src="{{ STATIC_URL }}img/article/pdf_icon.png" alt="PDF"/></a>
+        </p><!-- /.download -->
+        {% endif %}
+
+    </article><!-- /.entry -->
+
+</div><!-- /.article.article-single -->
+
+<div class="article-all">
+    <p>
+        <a href="/article/">&raquo; Alle Artikel</a>
+    </p>
+</div><!-- /.article-all -->

@@ -1,0 +1,32 @@
+{% extends 'template_1.html' %}
+
+{% block title %}News{% endblock %}
+
+{% block content_core %}
+<div id="newsticker">
+    {% for i in article %}
+    <blockquote class="entry {% cycle 'odd' 'even' %}{% if forloop.last %} last{% endif %}">
+        <h3>{{ i.release_date|date:"d. F, Y" }} - {{ i.title }}</h3>
+        {% if article.image %}
+        <p class="image">
+            <a href="/caloneo-news/{{ i.slug }}/">
+                <img src="{{ i.image.url }}" alt="" />
+            </a>
+        </p>
+        {% endif %}
+        <div class="teaser">{{ i.teaser|safe }}</div>
+        <p>
+            <a href="/caloneo-news/{{ i.slug }}/">Weiterlesen</a>
+        </p>
+    </blockquote>
+    {% empty %}
+    <p>Keine Eintr&auml;ge gefunden.</p>
+    {% endfor %}
+</div>
+
+<div class="newsticker-archive">
+    <p>
+        <a href="/caloneo-news/archive/">&raquo; CALONEO News Archiv</a>
+    </p>
+</div>
+{% endblock %}

@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block title %}Artikel{% endblock %}
+
+{% block breadcrumb %}{% endblock %}
+
+{% block content %}
+<section class="articles">
+    {% for a in article %}
+    <article class="entry {% cycle 'odd' 'even' %}{% if forloop.last %} last{% endif %}">
+        <h1>{{ a.title }}</h1>
+
+        <p class="date">
+            {{ a.release_date|date:"d. F, Y" }}
+        </p><!-- /.date -->
+
+        {% if a.image %}
+        <p class="image">
+            <a href="/article/{{ a.slug }}/">
+                <img src="{{ a.image.url }}" alt="" />
+            </a>
+        </p><!-- /.image -->
+        {% endif %}
+
+        <div class="article-teaser">
+            {{ a.teaser|safe }}
+        </div><!-- /.teaser -->
+
+        <p class="readmore">
+            <a href="/article/{{ a.slug }}/">Weiterlesen</a>
+        </p><!-- /.readmore -->
+
+    </article><!-- /.entry.odd.even.last -->
+
+    {% empty %}
+    <p class="empty">
+        Keine Eintr&auml;ge gefunden.
+    </p><!-- /.empty -->
+    {% endfor %}
+
+    {% if article and ARTICLE_PAGINATION %}
+        {% include 'article/paginator.html' %}
+    {% endif %}
+</section><!-- /.articles -->
+{% endblock %}
