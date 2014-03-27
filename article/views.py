@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
-from django.conf import settings
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 
-from models import Article
+from article.settings import PAGINATION, ITEMS_PER_PAGE
+from article.models import Article
 
 
 def teaser(request):
@@ -20,8 +20,8 @@ def teaser(request):
 def articles(request):
     articles = Article.objects.order_by('-release_date')
 
-    if settings.ARTICLE_PAGINATION:
-        paginator = Paginator(articles, 5)
+    if PAGINATION:
+        paginator = Paginator(articles, ITEMS_PER_PAGE)
         p = request.GET.get('page', 1)
 
         try:
@@ -36,8 +36,6 @@ def articles(request):
             article.paginator.num_pages,
             article.paginator.page_range
         )
-
-        ARTICLE_PAGINATION = settings.ARTICLE_PAGINATION
 
     return render_to_response(
         'article/articles.html',

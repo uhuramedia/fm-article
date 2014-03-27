@@ -2,9 +2,11 @@
 
 from django.forms import ModelForm, CharField
 from django.contrib.admin import ModelAdmin, site
+
 from ckeditor.widgets import CKEditorWidget
-from portlet.admin import PortletAdmin
-from models import Article, ArticlePortlet
+
+from article.settings import USE_PORTLET
+from article.models import Article, ArticlePortlet
 
 
 class CKEditorForm(ModelForm):
@@ -22,4 +24,8 @@ class ArticleAdmin(ModelAdmin):
 
 
 site.register(Article, ArticleAdmin)
-site.register(ArticlePortlet, PortletAdmin)
+
+
+if USE_PORTLET:
+    from portlet.admin import PortletAdmin
+    site.register(ArticlePortlet, PortletAdmin)

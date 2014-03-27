@@ -27,7 +27,7 @@
         </div><!-- /.teaser -->
 
         <p class="readmore">
-            <a href="/article/{{ a.slug }}/">Weiterlesen</a>
+        <a href="{% url 'article' slug=a.slug %}">Weiterlesen</a>
         </p><!-- /.readmore -->
 
     </article><!-- /.entry.odd.even.last -->
@@ -38,7 +38,7 @@
     </p><!-- /.empty -->
     {% endfor %}
 
-    {% if article and ARTICLE_PAGINATION %}
+    {% if article and PAGINATION %}
         {% include 'article/paginator.html' %}
     {% endif %}
 </section><!-- /.articles -->

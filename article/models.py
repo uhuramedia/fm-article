@@ -4,9 +4,11 @@ from django.conf import settings
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
 from django.db import models
+from django.core.urlresolvers import reverse
+
+from article.settings import USE_PORTLET
 
 from fm.utils.models import DateAwareModel
-from portlet.models import Portlet
 
 
 class Article(DateAwareModel):
@@ -38,15 +40,20 @@ class Article(DateAwareModel):
         return reverse('article', args=[self.slug])
 
 
-class ArticlePortlet(Portlet):
-    template = 'article/portlet.html'
-    article_amount = models.IntegerField(
-        _('Displaying amount of articles'),
-        default=3
-    )
+if USE_PORTLET:
+    from portlet.models import Portlet
 
-    class Meta:
-        ordering = ('modified',)
 
-    def article(self):
-        return Article.objects.order_by('-release_date')[:self.article_amount]
+    class ArticlePoVrtlet(Portlet):
+        template = 'article/portlet.html'
+        article_amount = models.IntegerField(
+            _('Displaying amount of articles'),
+            default=3
+        )
+
+        class Meta:
+            ordering = ('modified',)
+
+        def article(self):
+            return Article.objects\
+                .order_by('-release_date')[:self.article_amount]
