@@ -6,7 +6,7 @@ from django.contrib.admin import ModelAdmin, site
 from ckeditor.widgets import CKEditorWidget
 
 from article.settings import USE_PORTLET
-from article.models import Article, ArticlePortlet
+from article.models import Article
 
 
 class CKEditorForm(ModelForm):
@@ -27,5 +27,6 @@ site.register(Article, ArticleAdmin)
 
 
 if USE_PORTLET:
+    from article.models import ArticlePortlet
     from portlet.admin import PortletAdmin
     site.register(ArticlePortlet, PortletAdmin)

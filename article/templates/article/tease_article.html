@@ -1,0 +1,16 @@
+<!-- .container tease-article -->
+<section class="container tease-article">
+
+    {% for a in articles %}
+    <!-- .col-md-6 article -->
+    <article class="col-md-6 article">
+        <h1><a href="{% url 'article' slug=a.slug %}">{{ a.title }}</a></h1>
+        {{ a.teaser }}
+    </article>
+    <!-- /.col-md-6 article -->
+    {% empty %}
+    <p>No Articles found</p>
+    {% endfor %}
+
+</section>
+<!-- /.container tease-article -->

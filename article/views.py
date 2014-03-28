@@ -44,7 +44,7 @@ def articles(request):
     )
 
 
-def single(request, slug):
+def article(request, slug):
     if request.GET.get('type', False) == 'modal':
         extend = '-inner'
     else:

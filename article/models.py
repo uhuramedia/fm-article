@@ -44,7 +44,7 @@ if USE_PORTLET:
     from portlet.models import Portlet
 
 
-    class ArticlePoVrtlet(Portlet):
+    class ArticlePortlet(Portlet):
         template = 'article/portlet.html'
         article_amount = models.IntegerField(
             _('Displaying amount of articles'),
