@@ -1,0 +1,12 @@
+{% for a in articles %}
+    <li>
+        <p>
+            <a href="{% url 'article' a.slug %}">News:</a>
+            {{ a.title }}
+        </p>
+    </li>
+{% empty %}
+    <li>
+        <p>No Articles found</p>
+    </li>
+{% endfor %}
